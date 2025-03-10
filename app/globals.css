@@ -23,4 +23,129 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add custom gradient border class */
+.gradient-border-btn {
+  position: relative;
+  background: black;
+  z-index: 0;
+}
+
+.gradient-border-btn::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  padding: 1px; /* Border width */
+  border-radius: inherit;
+  background: linear-gradient(to right, #9333ea, #ec4899, #9333ea);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* Component gradient borders */
+.card-gradient-border {
+  position: relative;
+  background: black;
+  border-radius: 0.5rem;
+  z-index: 0;
+  padding: 1.5rem;
+}
+
+.card-gradient-border::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  padding: 1px;
+  border-radius: 0.5rem;
+  background: linear-gradient(
+    to right,
+    rgba(147, 51, 234, 0.5),
+    rgba(236, 72, 153, 0.5)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* Custom Scrollbar Styling */
+/* For Webkit browsers (Chrome, Safari, etc.) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #9333ea, #ec4899);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #a855f7, #f472b6);
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #9333ea #000000;
+}
+
+/* For Firefox - additional custom styling */
+@supports (scrollbar-color: auto) {
+  * {
+    scrollbar-color: linear-gradient(to bottom, #9333ea, #ec4899) #000000;
+  }
+}
+
+/* For Edge and other browsers */
+body::-webkit-scrollbar-corner {
+  background: #000000;
+}
+
+/* For specific scrollable containers */
+.scrollable-container {
+  scrollbar-width: thin;
+  scrollbar-color: linear-gradient(to bottom, #9333ea, #ec4899) #000000;
+}
+
+.scrollable-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollable-container::-webkit-scrollbar-track {
+  background-color: #000000;
+}
+
+.scrollable-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #9333ea, #ec4899);
+  border-radius: 10px;
 }

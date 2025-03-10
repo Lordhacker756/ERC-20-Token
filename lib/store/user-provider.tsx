@@ -1,37 +1,68 @@
 "use client";
 
-import { type ReactNode, createContext, useRef, useContext } from "react";
-import { useStore } from "zustand";
+import { create } from "zustand";
+import { createContext, useContext, useRef, PropsWithChildren } from "react";
 
-import { UserStore, createUserStore } from "./user-store";
-
-export type UserStoreApi = ReturnType<typeof createUserStore>;
-
-export const UserStoreContext = createContext<UserStoreApi | null>(null);
-
-export interface UserStoreProviderProps {
-  children: ReactNode;
+interface UserState {
+  wallet: string | null;
+  isWalletConnected: boolean;
+  isContractPaused: boolean;
+  connectWallet: (address: string) => void;
+  disconnectWallet: () => void;
+  setContractPaused: (isPaused: boolean) => void;
 }
 
-export const UserStoreProvider = ({ children }: UserStoreProviderProps) => {
-  const storeRef = useRef<UserStoreApi | null>(null);
-  if (!storeRef.current) {
-    storeRef.current = createUserStore();
-  }
+const defaultState: UserState = {
+  wallet: null,
+  isWalletConnected: false,
+  isContractPaused: false,
+  connectWallet: () => {},
+  disconnectWallet: () => {},
+  setContractPaused: () => {},
+};
 
+export const createUserSlice = () => {
+  return {
+    wallet: null,
+    isWalletConnected: false,
+    isContractPaused: false,
+    connectWallet: (address: string) =>
+      set({
+        wallet: address,
+        isWalletConnected: true,
+      }),
+    disconnectWallet: () =>
+      set({
+        wallet: null,
+        isWalletConnected: false,
+      }),
+    setContractPaused: (isPaused: boolean) =>
+      set({ isContractPaused: isPaused }),
+  };
+};
+
+export const useUserStore = create<UserState>((set) => ({
+  ...defaultState,
+  connectWallet: (address: string) =>
+    set({
+      wallet: address,
+      isWalletConnected: true,
+    }),
+  disconnectWallet: () =>
+    set({
+      wallet: null,
+      isWalletConnected: false,
+    }),
+  setContractPaused: (isPaused: boolean) => set({ isContractPaused: isPaused }),
+}));
+
+const UserStoreContext = createContext<typeof useUserStore | null>(null);
+
+export const UserStoreProvider = ({ children }: PropsWithChildren) => {
+  const storeRef = useRef(useUserStore);
   return (
     <UserStoreContext.Provider value={storeRef.current}>
       {children}
     </UserStoreContext.Provider>
   );
-};
-
-export const useUserStore = <T,>(selector: (store: UserStore) => T): T => {
-  const userStoreContext = useContext(UserStoreContext);
-
-  if (!userStoreContext) {
-    throw new Error(`useUserStore must be used within UserStoreProvider`);
-  }
-
-  return useStore(userStoreContext, selector);
 };
