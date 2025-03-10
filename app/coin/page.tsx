@@ -2,56 +2,60 @@
 import useContract from "@/lib/hooks/useContract";
 import useWallet from "@/lib/hooks/useWallet";
 import { useUserStore } from "@/lib/store/user-provider";
-import React from "react";
+import Header from "@/components/globals/Header";
+import AboutToken from "@/components/coin/AboutToken";
+import AccountDetails from "@/components/coin/AccountDetails";
+import Transactions from "@/components/coin/Transactions";
+import OwnerActions from "@/components/coin/OwnerActions";
+import React, { useEffect } from "react";
 
-const page = () => {
-  const { wallet, isWalletConnected, connectWallet, disconnectWallet } =
-    useUserStore((state) => state);
-  const { connectMetaMask, disconnectMetaMask, getBalance } = useWallet();
+const Page = () => {
+  const { isWalletConnected } = useUserStore((state) => state);
+  const { connectMetaMask } = useWallet();
   const { contract, connectContract } = useContract();
 
-  // Only log when values exist (after hydration)
-  if (wallet !== undefined && isWalletConnected !== undefined) {
-    console.log({ wallet, isWalletConnected });
-  }
   return (
-    <div>
-      <h1>Is wallet connected? {isWalletConnected}</h1>
-      <h1>Wallet address? {wallet}</h1>
-
-      <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        onClick={() => {
-          connectMetaMask();
-        }}
-      >
-        Connect Wallet
-      </button>
-      <button
-        onClick={() => {
-          disconnectMetaMask();
-        }}
-      >
-        Disconnect Wallet
-      </button>
-
-      <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        onClick={() => {
-          connectContract();
-        }}
-      >
-        Connect Contract
-      </button>
-      {/*  About Token*/}
-
-      {/* Account Details - Holding and Allowance */}
-
-      {/* Transactions - Transfer, Approve, Trasfer From, Claim Facuet */}
-
-      {/* Owner Actions - Pause, Mint, Burn, Transfer Ownership */}
+    <div className="min-h-screen bg-gray-900 text-gray-200">
+      <div className="container mx-auto px-4 py-8">
+        {!isWalletConnected ? (
+          <div className="text-center py-12">
+            <h1 className="text-3xl font-bold text-purple-400 mb-6">
+              Welcome to Tsundere Token
+            </h1>
+            <p className="text-gray-400 mb-8 max-w-lg mx-auto">
+              Connect your wallet to interact with the token contract and access
+              all features.
+            </p>
+            <button
+              className="bg-gradient-to-r from-purple-800 to-pink-700 text-white font-bold py-3 px-8 rounded-full hover:from-purple-700 hover:to-pink-600 transition-all duration-200 border border-purple-500"
+              onClick={() => connectMetaMask()}
+            >
+              Connect Wallet
+            </button>
+          </div>
+        ) : !contract ? (
+          <div className="text-center py-12">
+            <h1 className="text-3xl font-bold text-purple-400 mb-6">
+              Connect to Contract
+            </h1>
+            <button
+              className="bg-gradient-to-r from-purple-800 to-pink-700 text-white font-bold py-3 px-8 rounded-full hover:from-purple-700 hover:to-pink-600 transition-all duration-200 border border-purple-500"
+              onClick={() => connectContract()}
+            >
+              Connect to Contract
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            <AboutToken />
+            <AccountDetails />
+            <Transactions />
+            <OwnerActions />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
-export default page;
+export default Page;
