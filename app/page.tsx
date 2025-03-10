@@ -40,19 +40,19 @@ export default function Home() {
           <div className="absolute inset-0 flex items-center justify-center opacity-50 pointer-events-none">
             <div className="flex gap-4">
               <img
-                src="https://picsum.photos/id/287/150/150"
+                src="/13.jpeg"
                 alt="Hint"
                 className="w-[120px] h-[120px] rounded-lg shadow-lg animate-float"
                 style={{ animationDelay: "0s" }}
               />
               <img
-                src="https://picsum.photos/id/1001/150/150"
+                src="/6.jpeg"
                 alt="Hint"
                 className="w-[100px] h-[100px] rounded-lg shadow-lg animate-float"
                 style={{ animationDelay: "0.5s" }}
               />
               <img
-                src="https://picsum.photos/id/1025/150/150"
+                src="/5.jpeg"
                 alt="Hint"
                 className="w-[90px] h-[90px] rounded-lg shadow-lg animate-float"
                 style={{ animationDelay: "0.8s" }}
@@ -63,14 +63,18 @@ export default function Home() {
           {/* Original ImageTrail component */}
           <ImageTrail
             items={[
-              "https://picsum.photos/id/287/300/300",
-              "https://picsum.photos/id/1001/300/300",
-              "https://picsum.photos/id/1025/300/300",
-              "https://picsum.photos/id/1026/300/300",
-              "https://picsum.photos/id/1027/300/300",
-              "https://picsum.photos/id/1028/300/300",
-              "https://picsum.photos/id/1029/300/300",
-              "https://picsum.photos/id/1030/300/300",
+              "/0.jpeg",
+              "/1.jpeg",
+              "/2.jpeg",
+              "/3.jpeg",
+              "/4.jpeg",
+              "/6.jpeg",
+              "/7.jpeg",
+              "/8.jpeg",
+              "/9.jpeg",
+              "/11.jpeg",
+              "/12.jpeg",
+              "/11.jpeg",
             ]}
             variant={1}
           />
