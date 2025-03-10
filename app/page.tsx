@@ -28,7 +28,7 @@ export default function Home() {
           delay={150}
           animateBy="words"
           direction="top"
-          className="text-2xl mt-5 sm:text-3xl md:text-4xl lg:text-[3rem] text-center"
+          className="text-xl w-[90%] sm:w-full flex justify-center font-bold mt-5 sm:text-3xl md:text-4xl lg:text-[3rem] text-center"
         />
         <div
           className="w-full h-[300px] relative overflow-hidden cursor-none mt-8"
@@ -89,7 +89,7 @@ export default function Home() {
         className="custom-scroll-text"
       />
       {/* ScrollReveal component */}
-      <div className="mt-50 w-[50%] min-h-[450px] sm:w-[70%] md:w-[80%] lg:w-[90%] mx-auto py-5">
+      <div className="mt-50 w-[90%] min-h-[450px] sm:w-[70%] md:w-[80%] lg:w-[90%] mx-auto py-5">
         <GlitchText speed={1} enableShadows={true} enableOnHover={true}>
           About
         </GlitchText>
@@ -109,7 +109,7 @@ export default function Home() {
           <button className="relative group">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-full opacity-75 group-hover:opacity-100 animate-spin-slow blur-sm"></div>
             <Link href="/coin">
-              <div className="relative px-7 py-4 bg-black rounded-full leading-none flex items-center">
+              <div className="relative px-7 py-2 sm:px-7 sm:py-4 bg-black rounded-full leading-none flex items-center">
                 <span className=" px-1 py-2 text-lg font-bold">
                   Claim Your Tsundere...
                 </span>
