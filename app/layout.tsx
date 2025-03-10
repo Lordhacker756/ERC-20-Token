@@ -38,20 +38,20 @@ export const metadata: Metadata = {
   creator: "Tsundere Coin",
   publisher: "Tsundere Coin",
   robots: "index, follow",
-  metadataBase: new URL("https://tsunderecoin.com"), // Replace with your actual domain
+  metadataBase: new URL("https://tsundere.vercel.app"), // Replace with your actual domain
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
-    url: "https://tsunderecoin.com", // Replace with your actual domain
+    url: "https://tsundere.vercel.app", // Replace with your actual domain
     title: "Tsundere Coin | The Anime Enthusiast's Cryptocurrency",
     description:
       "ERC-20 Token Made By Weeb For the Weebs🎎. Join our community!",
     siteName: "Tsundere Coin",
     images: [
       {
-        url: "/og-image.png", // Create and add this image to your public folder
+        url: "/home.png", // Create and add this image to your public folder
         width: 1200,
         height: 630,
         alt: "Tsundere Coin logo",
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     title: "Tsundere Coin | The Anime Enthusiast's Cryptocurrency",
     description: "ERC-20 Token Made By Weeb For the Weebs🎎",
     creator: "@rudraksx", // Replace with your actual Twitter handle
-    images: ["/og-image.png"], // Create and add this image to your public folder
+    images: ["/home.png"], // Create and add this image to your public folder
   },
 };
 
