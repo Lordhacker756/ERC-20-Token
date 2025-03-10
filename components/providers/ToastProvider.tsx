@@ -12,21 +12,6 @@ export function ToastProvider() {
           color: "#E2E8F0", // light text for dark theme
           border: "1px solid #4A5568",
         },
-        success: {
-          style: {
-            borderLeft: "4px solid #48BB78", // green border for success
-          },
-        },
-        error: {
-          style: {
-            borderLeft: "4px solid #F56565", // red border for errors
-          },
-        },
-        warning: {
-          style: {
-            borderLeft: "4px solid #ED8936", // orange border for warnings
-          },
-        },
       }}
     />
   );
