@@ -1,11 +1,14 @@
 "use client";
-import useStore from "@/lib/hooks/useStore";
+import useContract from "@/lib/hooks/useContract";
+import useWallet from "@/lib/hooks/useWallet";
 import { useUserStore } from "@/lib/store/user-provider";
 import React from "react";
 
 const page = () => {
   const { wallet, isWalletConnected, connectWallet, disconnectWallet } =
     useUserStore((state) => state);
+  const { connectMetaMask, disconnectMetaMask, getBalance } = useWallet();
+  const { contract, connectContract } = useContract();
 
   // Only log when values exist (after hydration)
   if (wallet !== undefined && isWalletConnected !== undefined) {
@@ -17,18 +20,28 @@ const page = () => {
       <h1>Wallet address? {wallet}</h1>
 
       <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         onClick={() => {
-          connectWallet("21X01A6657");
+          connectMetaMask();
         }}
       >
         Connect Wallet
       </button>
       <button
         onClick={() => {
-          disconnectWallet();
+          disconnectMetaMask();
         }}
       >
         Disconnect Wallet
+      </button>
+
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        onClick={() => {
+          connectContract();
+        }}
+      >
+        Connect Contract
       </button>
       {/*  About Token*/}
 
