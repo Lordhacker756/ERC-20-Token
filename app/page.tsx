@@ -10,7 +10,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen w-screen relative pt-10">
+    <div className="min-h-screen w-screen relative pt-15">
       {/* Background layer */}
       <div className="absolute inset-0">
         <Aurora
@@ -21,14 +21,14 @@ export default function Home() {
         />
       </div>
       {/* Content layer */}
-      <div className="relative z-10 h-full mb-20 w-full flex flex-col items-center justify-center overflow-hidden">
+      <div className="relative z-10 h-full mt-10 mb-20 w-full flex flex-col items-center justify-center overflow-hidden">
         <CircularText text="TSUNDERE*COIN*ERC-20*" onHover="goBonkers" />
         <BlurText
           text="ERC-20 Token Made By Weeb For the Weebs🎎"
           delay={150}
           animateBy="words"
           direction="top"
-          className="text-2xl mt-5 sm:text-3xl md:text-4xl lg:text-[3rem] text-center"
+          className="text-xl w-[90%] sm:w-full flex justify-center font-bold mt-5 sm:text-3xl md:text-4xl lg:text-[3rem] text-center"
         />
         <div
           className="w-full h-[300px] relative overflow-hidden cursor-none mt-8"
@@ -40,19 +40,19 @@ export default function Home() {
           <div className="absolute inset-0 flex items-center justify-center opacity-50 pointer-events-none">
             <div className="flex gap-4">
               <img
-                src="https://picsum.photos/id/287/150/150"
+                src="/13.jpeg"
                 alt="Hint"
                 className="w-[120px] h-[120px] rounded-lg shadow-lg animate-float"
                 style={{ animationDelay: "0s" }}
               />
               <img
-                src="https://picsum.photos/id/1001/150/150"
+                src="/6.jpeg"
                 alt="Hint"
                 className="w-[100px] h-[100px] rounded-lg shadow-lg animate-float"
                 style={{ animationDelay: "0.5s" }}
               />
               <img
-                src="https://picsum.photos/id/1025/150/150"
+                src="/5.jpeg"
                 alt="Hint"
                 className="w-[90px] h-[90px] rounded-lg shadow-lg animate-float"
                 style={{ animationDelay: "0.8s" }}
@@ -63,14 +63,18 @@ export default function Home() {
           {/* Original ImageTrail component */}
           <ImageTrail
             items={[
-              "https://picsum.photos/id/287/300/300",
-              "https://picsum.photos/id/1001/300/300",
-              "https://picsum.photos/id/1025/300/300",
-              "https://picsum.photos/id/1026/300/300",
-              "https://picsum.photos/id/1027/300/300",
-              "https://picsum.photos/id/1028/300/300",
-              "https://picsum.photos/id/1029/300/300",
-              "https://picsum.photos/id/1030/300/300",
+              "/0.jpeg",
+              "/1.jpeg",
+              "/2.jpeg",
+              "/3.jpeg",
+              "/4.jpeg",
+              "/6.jpeg",
+              "/7.jpeg",
+              "/8.jpeg",
+              "/9.jpeg",
+              "/11.jpeg",
+              "/12.jpeg",
+              "/11.jpeg",
             ]}
             variant={1}
           />
@@ -89,7 +93,7 @@ export default function Home() {
         className="custom-scroll-text"
       />
       {/* ScrollReveal component */}
-      <div className="mt-50 w-[50%] min-h-[450px] sm:w-[70%] md:w-[80%] lg:w-[90%] mx-auto py-5">
+      <div className="mt-50 w-[90%] min-h-[450px] sm:w-[70%] md:w-[80%] lg:w-[90%] mx-auto py-5">
         <GlitchText speed={1} enableShadows={true} enableOnHover={true}>
           About
         </GlitchText>
@@ -109,7 +113,7 @@ export default function Home() {
           <button className="relative group">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-full opacity-75 group-hover:opacity-100 animate-spin-slow blur-sm"></div>
             <Link href="/coin">
-              <div className="relative px-7 py-4 bg-black rounded-full leading-none flex items-center">
+              <div className="relative px-7 py-2 sm:px-7 sm:py-4 bg-black rounded-full leading-none flex items-center">
                 <span className=" px-1 py-2 text-lg font-bold">
                   Claim Your Tsundere...
                 </span>

@@ -1,33 +1,29 @@
 import React from "react";
-import Link from "next/link";
-import { FaGithub, FaHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-gradient-to-r from-purple-600 via-pink-500 to-black py-4 px-6 text-white z-20">
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
-        <div className="flex items-center mb-4 md:mb-0">
-          <span className="text-xl font-bold mr-2">ツンデレ</span>
-          <span className="text-sm opacity-80">v1.0.0</span>
-        </div>
+    <footer className="bg-black p-4 text-gray-400 relative">
+      {/* Gradient border top */}
+      <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600"></div>
 
-        <div className="flex flex-col items-center md:items-end">
-          <div className="flex items-center mb-2">
-            <span className="mr-2 text-sm">Made with</span>
-            <FaHeart className="text-red-300 animate-pulse mx-1" />
-            <span className="ml-1 text-sm">by</span>
-            <span className="ml-2 font-bold text-yellow-200">ウトカーシュ</span>
-          </div>
+      <div className="container mx-auto text-center">
+        <p>© {new Date().getFullYear()} Tsundere Token. All rights reserved.</p>
 
-          <Link
+        <div className="mt-3 text-sm flex items-center justify-center gap-2">
+          Made with{" "}
+          <span className="inline-block animate-pulse text-pink-500">
+            <FaHeart />
+          </span>{" "}
+          by <span className="text-purple-400">ウトカルシュ</span>{" "}
+          <a
             href="https://github.com/Lordhacker756"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center hover:text-pink-200 transition-colors cursor-pointer px-3 py-1 rounded-md relative z-30"
+            className="text-purple-400 hover:text-purple-300 hover:underline"
           >
-            <FaGithub className="mr-1" />
-            <span className="text-sm">Lordhacker756</span>
-          </Link>
+            @Lordhacker756
+          </a>
         </div>
       </div>
     </footer>

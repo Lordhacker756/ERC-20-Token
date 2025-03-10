@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tsundere Token (TSN)
 
-## Getting Started
+A playful ERC-20 token implementation with a tsundere personality - it's not like it wants to be in your wallet or anything... b-baka!
 
-First, run the development server:
+<img src="./assets/home.png" width="100%" height="auto">
+
+## 🌟 Features
+
+- **Standard ERC-20 Implementation** - Fully compatible with the ERC-20 token standard
+- **Pausable** - Contract can be paused in emergency situations
+- **Capped Supply** - Maximum supply is capped to prevent inflation
+- **Faucet Functionality** - Users can request tokens through a faucet
+- **Owner Controls** - Special functions for contract owner:
+  - Minting new tokens
+  - Burning tokens
+  - Pausing/unpausing contract
+  - Transferring ownership
+
+## 💻 Tech Stack
+
+- **Frontend**: Next.js, React, TypeScript, Tailwind CSS
+- **Blockchain**: Ethereum, MetaMask
+- **Smart Contract**: Solidity, ERC-20
+- **Libraries**: ethers.js
+
+## 📋 Prerequisites
+
+- Node.js (v18+)
+- MetaMask browser extension
+- Ethereum wallet with test ETH (for testnet deployment)
+
+## 🚀 Getting Started
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/Lordhacker756/ERC-20-Token
+cd tsundere-token
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Start the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:2345](http://localhost:2345) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📝 Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Connecting to the Tsundere Token
 
-## Learn More
+1. Navigate to the Token page
+2. Connect your MetaMask wallet
+3. The app will automatically connect to the deployed TSN contract
 
-To learn more about Next.js, take a look at the following resources:
+### User Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **View Token Information**: Token name, symbol, total supply, etc.
+- **Check Balance**: View your TSN token balance
+- **Use Faucet**: Request free TSN tokens (subject to limits)
+- **Transfer Tokens**: Send tokens to other addresses
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Owner Features
 
-## Deploy on Vercel
+- **Mint Tokens**: Create new tokens (up to the cap)
+- **Burn Tokens**: Remove tokens from circulation
+- **Pause/Unpause**: Toggle the contract's paused state
+- **Transfer Ownership**: Change the contract owner
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📄 Contract Details
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Contract Address**: 0x8A86B7C7b3B8a5FE4c07fC348D91A8f06262c276
+- **Network**: Sepolia Testnet
+- **View on Etherscan**: [Contract Link](https://sepolia.etherscan.io/address/0x8A86B7C7b3B8a5FE4c07fC348D91A8f06262c276)
+
+## 🖼️ Screenshots
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+  <img src="./assets/home.png" alt="Home Page" width="100%" height="auto"/>
+  <img src="./assets/connect-wallet.png" alt="Connect Wallet" width="100%" height="auto"/>
+  <img src="./assets/about-coin.png" alt="About Coin" width="100%" height="auto"/>
+  <img src="./assets/owner-controls.png" alt="Owner Controls" width="100%" height="auto"/>
+</div>
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📜 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgements
+- ethers.js for blockchain interactions
+- Next.js for the frontend framework
+
