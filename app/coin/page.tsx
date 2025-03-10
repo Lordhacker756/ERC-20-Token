@@ -28,7 +28,10 @@ const Page = () => {
   const handleConnectWallet = async () => {
     setIsConnectingWallet(true);
     try {
-      await connectMetaMask();
+      let res = await connectMetaMask();
+      if (!res) {
+        return;
+      }
       toast.success("Wallet connected successfully");
     } catch (error: any) {
       console.error("Connection error:", error);

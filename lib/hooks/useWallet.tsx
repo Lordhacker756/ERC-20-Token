@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import { BrowserProvider } from "ethers";
 import { useUserStore } from "../store/user-provider";
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 const useWallet = () => {
   const { wallet, isWalletConnected, connectWallet, disconnectWallet } =
@@ -32,6 +33,12 @@ const useWallet = () => {
   // Connect wallet
   const connectMetaMask = async () => {
     try {
+      if (!window.ethereum) {
+        // Show error toast for missing MetaMask
+        toast.error("MetaMask not detected. Please install MetaMask.");
+        return false;
+      }
+
       const provider = new BrowserProvider(window.ethereum);
 
       // MetaMask requires requesting permission to connect users accounts
