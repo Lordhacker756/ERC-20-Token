@@ -89,10 +89,10 @@ yarn dev
 ## 🖼️ Screenshots
 
 <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-  <img src="./assets/home.png" alt="Home Page" width="400"/>
-  <img src="./assets/connect-wallet.png" alt="Token Info" width="400"/>
-  <img src="./assets/about-coin.png" alt="Owner Controls" width="400"/>
-  <img src="./assets/owner-controls.png" alt="Owner Controls" width="400"/>
+  <img src="./assets/home.png" alt="Home Page" width="100%" height="auto"/>
+  <img src="./assets/connect-wallet.png" alt="Connect Wallet" width="100%" height="auto"/>
+  <img src="./assets/about-coin.png" alt="About Coin" width="100%" height="auto"/>
+  <img src="./assets/owner-controls.png" alt="Owner Controls" width="100%" height="auto"/>
 </div>
 
 ## 🤝 Contributing
