@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from "react";
 import useContract from "@/lib/hooks/useContract";
 import { useUserStore } from "@/lib/store/user-provider";
+import LoadingButton from "@/components/ui/LoadingButton";
+import { toast } from "sonner";
 
 const OwnerActions = () => {
   const { contract } = useContract();
-  const { wallet, isWalletConnected } = useUserStore((state) => state);
+  const { wallet, isWalletConnected, isContractPaused, setContractPaused } =
+    useUserStore((state) => state);
 
   const [isOwner, setIsOwner] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
   const [mintForm, setMintForm] = useState({ recipient: "", amount: "" });
   const [burnForm, setBurnForm] = useState({ amount: "" });
   const [newOwnerAddress, setNewOwnerAddress] = useState("");
   const [txStatus, setTxStatus] = useState("");
+
+  // Loading states
+  const [isPauseToggling, setIsPauseToggling] = useState(false);
+  const [isMinting, setIsMinting] = useState(false);
+  const [isBurning, setIsBurning] = useState(false);
+  const [isTransferringOwnership, setIsTransferringOwnership] = useState(false);
 
   useEffect(() => {
     const checkOwnership = async () => {
@@ -20,28 +28,49 @@ const OwnerActions = () => {
           const contractOwner = await contract.owner();
           const paused = await contract.paused();
           setIsOwner(wallet.toLowerCase() === contractOwner.toLowerCase());
-          setIsPaused(paused);
+          setContractPaused(paused);
         } catch (error) {
           console.error("Error checking ownership:", error);
+          toast.error("Failed to check contract ownership");
         }
       }
     };
 
     checkOwnership();
-  }, [contract, wallet, isWalletConnected]);
+  }, [contract, wallet, isWalletConnected, setContractPaused]);
 
   const handlePauseToggle = async () => {
     if (!contract || !isWalletConnected || !isOwner) return;
 
-    setTxStatus(isPaused ? "Unpausing contract..." : "Pausing contract...");
+    setIsPauseToggling(true);
+    setTxStatus(
+      isContractPaused ? "Unpausing contract..." : "Pausing contract..."
+    );
     try {
-      const tx = isPaused ? await contract.unpause() : await contract.pause();
+      const tx = isContractPaused
+        ? await contract.unpause()
+        : await contract.pause();
       await tx.wait();
-      setIsPaused(!isPaused);
-      setTxStatus(isPaused ? "Contract unpaused!" : "Contract paused!");
+
+      // Update both local and global state
+      setContractPaused(!isContractPaused);
+
+      setTxStatus(isContractPaused ? "Contract unpaused!" : "Contract paused!");
+      toast.success(
+        isContractPaused
+          ? "Contract successfully unpaused"
+          : "Contract successfully paused"
+      );
     } catch (error: any) {
       console.error("Pause toggle error:", error);
-      setTxStatus(`${isPaused ? "Unpause" : "Pause"} failed: ${error.message}`);
+      setTxStatus(
+        `${isContractPaused ? "Unpause" : "Pause"} failed: ${error.message}`
+      );
+      toast.error(
+        `${isContractPaused ? "Unpause" : "Pause"} failed: ${error.message}`
+      );
+    } finally {
+      setIsPauseToggling(false);
     }
   };
 
@@ -49,15 +78,24 @@ const OwnerActions = () => {
     e.preventDefault();
     if (!contract || !isWalletConnected || !isOwner) return;
 
+    setIsMinting(true);
     setTxStatus("Minting tokens...");
     try {
       const tx = await contract.mint(mintForm.recipient, mintForm.amount);
       await tx.wait();
       setTxStatus("Tokens minted successfully!");
+      toast.success(
+        `Successfully minted ${
+          mintForm.amount
+        } TSUN to ${mintForm.recipient.slice(0, 6)}...`
+      );
       setMintForm({ recipient: "", amount: "" });
     } catch (error: any) {
       console.error("Mint error:", error);
       setTxStatus(`Mint failed: ${error.message}`);
+      toast.error(`Mint failed: ${error.message}`);
+    } finally {
+      setIsMinting(false);
     }
   };
 
@@ -65,15 +103,20 @@ const OwnerActions = () => {
     e.preventDefault();
     if (!contract || !isWalletConnected || !isOwner) return;
 
+    setIsBurning(true);
     setTxStatus("Burning tokens...");
     try {
       const tx = await contract.burn(burnForm.amount);
       await tx.wait();
       setTxStatus("Tokens burned successfully!");
+      toast.success(`Successfully burned ${burnForm.amount} TSUN`);
       setBurnForm({ amount: "" });
     } catch (error: any) {
       console.error("Burn error:", error);
       setTxStatus(`Burn failed: ${error.message}`);
+      toast.error(`Burn failed: ${error.message}`);
+    } finally {
+      setIsBurning(false);
     }
   };
 
@@ -81,22 +124,41 @@ const OwnerActions = () => {
     e.preventDefault();
     if (!contract || !isWalletConnected || !isOwner) return;
 
+    // Ask for confirmation
+    if (
+      !confirm(
+        `Are you sure you want to transfer ownership to ${newOwnerAddress}? This action cannot be undone!`
+      )
+    ) {
+      return;
+    }
+
+    setIsTransferringOwnership(true);
     setTxStatus("Transferring ownership...");
     try {
       const tx = await contract.transferOwnership(newOwnerAddress);
       await tx.wait();
       setTxStatus("Ownership transferred successfully!");
+      toast.success(
+        `Ownership successfully transferred to ${newOwnerAddress.slice(
+          0,
+          6
+        )}...`
+      );
       setIsOwner(false);
       setNewOwnerAddress("");
     } catch (error: any) {
       console.error("Transfer ownership error:", error);
       setTxStatus(`Transfer ownership failed: ${error.message}`);
+      toast.error(`Transfer ownership failed: ${error.message}`);
+    } finally {
+      setIsTransferringOwnership(false);
     }
   };
 
   if (!isWalletConnected) {
     return (
-      <div className="p-6 bg-gray-900 rounded-lg shadow-md border border-gray-800">
+      <div className="card-gradient-border bg-black shadow-md">
         <h2 className="text-xl font-bold text-purple-400 mb-4">
           Owner Actions
         </h2>
@@ -109,7 +171,7 @@ const OwnerActions = () => {
 
   if (!isOwner) {
     return (
-      <div className="p-6 bg-gray-900 rounded-lg shadow-md border border-gray-800">
+      <div className="card-gradient-border bg-black shadow-md">
         <h2 className="text-xl font-bold text-purple-400 mb-4">
           Owner Actions
         </h2>
@@ -119,7 +181,7 @@ const OwnerActions = () => {
   }
 
   return (
-    <div className="p-6 bg-gray-900 rounded-lg shadow-md border border-gray-800">
+    <div className="card-gradient-border bg-black shadow-md">
       <h2 className="text-xl font-bold text-purple-400 mb-4">Owner Actions</h2>
 
       {txStatus && (
@@ -138,7 +200,7 @@ const OwnerActions = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Pause/Unpause */}
-        <div className="border border-gray-700 p-4 rounded-lg bg-gray-800/50 flex flex-col justify-between">
+        <div className="border border-gray-800 p-4 rounded-lg bg-black/50 flex flex-col justify-between">
           <div>
             <h3 className="font-semibold text-gray-200 mb-3">
               Contract Status
@@ -147,30 +209,29 @@ const OwnerActions = () => {
               Current status:{" "}
               <span
                 className={
-                  isPaused
+                  isContractPaused
                     ? "text-red-400 font-medium"
                     : "text-green-400 font-medium"
                 }
               >
-                {isPaused ? "Paused" : "Active"}
+                {isContractPaused ? "Paused" : "Active"}
               </span>
             </p>
             <p className="text-sm text-gray-400 mb-4">
-              {isPaused
+              {isContractPaused
                 ? "When paused, all token transfers are disabled."
                 : "When active, token transfers are enabled."}
             </p>
           </div>
-          <button
+          <LoadingButton
             onClick={handlePauseToggle}
-            className={`w-full py-2 px-4 rounded transition duration-200 ${
-              isPaused
-                ? "bg-green-700 hover:bg-green-600 text-white"
-                : "bg-red-700 hover:bg-red-600 text-white"
-            }`}
+            isLoading={isPauseToggling}
+            loadingText={isContractPaused ? "Unpausing..." : "Pausing..."}
+            fullWidth
+            variant={isContractPaused ? "success" : "danger"}
           >
-            {isPaused ? "Unpause Contract" : "Pause Contract"}
-          </button>
+            {isContractPaused ? "Unpause Contract" : "Pause Contract"}
+          </LoadingButton>
         </div>
 
         {/* Mint */}
@@ -190,6 +251,7 @@ const OwnerActions = () => {
                 className="w-full p-2 mt-1 border border-gray-700 rounded bg-gray-800 text-gray-200"
                 placeholder="0x..."
                 required
+                disabled={isMinting}
               />
             </div>
             <div>
@@ -205,14 +267,18 @@ const OwnerActions = () => {
                 className="w-full p-2 mt-1 border border-gray-700 rounded bg-gray-800 text-gray-200"
                 placeholder="Amount"
                 required
+                disabled={isMinting}
               />
             </div>
-            <button
+            <LoadingButton
               type="submit"
-              className="w-full bg-green-700 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-200"
+              isLoading={isMinting}
+              loadingText="Minting..."
+              fullWidth
+              variant="success"
             >
               Mint
-            </button>
+            </LoadingButton>
           </form>
         </div>
 
@@ -233,18 +299,22 @@ const OwnerActions = () => {
                 className="w-full p-2 mt-1 border border-gray-700 rounded bg-gray-800 text-gray-200"
                 placeholder="Amount"
                 required
+                disabled={isBurning}
               />
             </div>
             <p className="text-sm text-gray-400 mb-4">
               Burning tokens will permanently destroy them from your account
               balance and reduce the total supply.
             </p>
-            <button
+            <LoadingButton
               type="submit"
-              className="w-full bg-orange-700 text-white py-2 px-4 rounded hover:bg-orange-600 transition duration-200"
+              isLoading={isBurning}
+              loadingText="Burning..."
+              fullWidth
+              variant="warning"
             >
               Burn
-            </button>
+            </LoadingButton>
           </form>
         </div>
 
@@ -265,18 +335,22 @@ const OwnerActions = () => {
                 className="w-full p-2 mt-1 border border-gray-700 rounded bg-gray-800 text-gray-200"
                 placeholder="0x..."
                 required
+                disabled={isTransferringOwnership}
               />
             </div>
             <p className="text-sm text-red-400 font-medium mb-4">
               WARNING: This action is irreversible. Once ownership is
               transferred, you will no longer have access to owner functions.
             </p>
-            <button
+            <LoadingButton
               type="submit"
-              className="w-full bg-purple-700 text-white py-2 px-4 rounded hover:bg-purple-600 transition duration-200"
+              isLoading={isTransferringOwnership}
+              loadingText="Transferring..."
+              fullWidth
+              variant="danger"
             >
               Transfer Ownership
-            </button>
+            </LoadingButton>
           </form>
         </div>
       </div>

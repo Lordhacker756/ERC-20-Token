@@ -10,7 +10,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen w-screen relative pt-10">
+    <div className="min-h-screen w-screen relative pt-15">
       {/* Background layer */}
       <div className="absolute inset-0">
         <Aurora
@@ -21,7 +21,7 @@ export default function Home() {
         />
       </div>
       {/* Content layer */}
-      <div className="relative z-10 h-full mb-20 w-full flex flex-col items-center justify-center overflow-hidden">
+      <div className="relative z-10 h-full mt-10 mb-20 w-full flex flex-col items-center justify-center overflow-hidden">
         <CircularText text="TSUNDERE*COIN*ERC-20*" onHover="goBonkers" />
         <BlurText
           text="ERC-20 Token Made By Weeb For the Weebs🎎"

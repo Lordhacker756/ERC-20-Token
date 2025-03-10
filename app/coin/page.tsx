@@ -2,23 +2,66 @@
 import useContract from "@/lib/hooks/useContract";
 import useWallet from "@/lib/hooks/useWallet";
 import { useUserStore } from "@/lib/store/user-provider";
-import Header from "@/components/globals/Header";
 import AboutToken from "@/components/coin/AboutToken";
 import AccountDetails from "@/components/coin/AccountDetails";
 import Transactions from "@/components/coin/Transactions";
 import OwnerActions from "@/components/coin/OwnerActions";
-import React, { useEffect } from "react";
+import LoadingButton from "@/components/ui/LoadingButton";
+import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const Page = () => {
   const { isWalletConnected } = useUserStore((state) => state);
   const { connectMetaMask } = useWallet();
   const { contract, connectContract } = useContract();
 
+  const [isConnectingWallet, setIsConnectingWallet] = useState(false);
+  const [isConnectingContract, setIsConnectingContract] = useState(false);
+
+  // Connect to contract when wallet is connected
+  useEffect(() => {
+    if (isWalletConnected) {
+      handleConnectContract();
+    }
+  }, [isWalletConnected]);
+
+  const handleConnectWallet = async () => {
+    setIsConnectingWallet(true);
+    try {
+      await connectMetaMask();
+      toast.success("Wallet connected successfully");
+    } catch (error: any) {
+      console.error("Connection error:", error);
+      toast.error(
+        `Failed to connect wallet: ${error.message || "Unknown error"}`
+      );
+    } finally {
+      setIsConnectingWallet(false);
+    }
+  };
+
+  const handleConnectContract = async () => {
+    setIsConnectingContract(true);
+    try {
+      await connectContract();
+      if (contract) {
+        toast.success("Contract connected successfully");
+      }
+    } catch (error: any) {
+      console.error("Contract connection error:", error);
+      toast.error(
+        `Failed to connect to contract: ${error.message || "Unknown error"}`
+      );
+    } finally {
+      setIsConnectingContract(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-200">
+    <div className="min-h-[80vh] bg-black text-gray-200">
       <div className="container mx-auto px-4 py-8">
         {!isWalletConnected ? (
-          <div className="text-center py-12">
+          <div className="text-center py-12 flex flex-col items-center justify-center h-[60vh]">
             <h1 className="text-3xl font-bold text-purple-400 mb-6">
               Welcome to Tsundere Token
             </h1>
@@ -26,24 +69,30 @@ const Page = () => {
               Connect your wallet to interact with the token contract and access
               all features.
             </p>
-            <button
-              className="bg-gradient-to-r from-purple-800 to-pink-700 text-white font-bold py-3 px-8 rounded-full hover:from-purple-700 hover:to-pink-600 transition-all duration-200 border border-purple-500"
-              onClick={() => connectMetaMask()}
+            <LoadingButton
+              onClick={handleConnectWallet}
+              isLoading={isConnectingWallet}
+              loadingText="Connecting..."
+              variant="gradient-border"
+              className="rounded-full px-8 py-3 text-lg"
             >
               Connect Wallet
-            </button>
+            </LoadingButton>
           </div>
         ) : !contract ? (
           <div className="text-center py-12">
             <h1 className="text-3xl font-bold text-purple-400 mb-6">
               Connect to Contract
             </h1>
-            <button
-              className="bg-gradient-to-r from-purple-800 to-pink-700 text-white font-bold py-3 px-8 rounded-full hover:from-purple-700 hover:to-pink-600 transition-all duration-200 border border-purple-500"
-              onClick={() => connectContract()}
+            <LoadingButton
+              onClick={handleConnectContract}
+              isLoading={isConnectingContract}
+              loadingText="Connecting..."
+              variant="gradient-border"
+              className="rounded-full px-8 py-3 text-lg"
             >
               Connect to Contract
-            </button>
+            </LoadingButton>
           </div>
         ) : (
           <div className="space-y-6">
